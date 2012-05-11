@@ -5,7 +5,7 @@
 
   rs = remoteStorageUtils;
 
-  LoginController = function($scope, settingsDAO) {
+  LoginController = function($scope, $location, settingsDAO) {
     log("Login");
     $scope.session.isLoggedIn = false;
     $scope.userAddress = "shybyte@owncube.com";
@@ -17,12 +17,14 @@
         if (userAddress) {
           return rs.connect(userAddress, function(error, storageInfo) {
             return rs.authorize(['public', 'sharedstuff'], function(token) {
-              var targetUrl;
+              var targetPath;
               localStorage.setItem('userAddress', userAddress);
-              targetUrl = sessionStorage.getItem('targetHref') || 'index.html';
-              sessionStorage.removeItem('targetHref');
-              window.location.replace(targetUrl);
-              return $scope.setLoggenOn();
+              $scope.setLoggenOn();
+              targetPath = sessionStorage.getItem('targetPath') || '/';
+              sessionStorage.removeItem('targetPath');
+              return $scope.$apply(function() {
+                return $location.path(targetPath);
+              });
             });
           });
         } else {
@@ -34,7 +36,7 @@
     };
   };
 
-  LoginController.$inject = ['$scope', 'settingsDAO'];
+  LoginController.$inject = ['$scope', '$location', 'settingsDAO'];
 
   this.LoginController = LoginController;
 

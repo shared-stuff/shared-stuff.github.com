@@ -1,5 +1,5 @@
 (function() {
-  var FriendEditController, FriendsController, buildInviteFriendUrl, focus, focusAndSelect, isBlank, log;
+  var FriendEditController, FriendViewController, FriendsController, buildInviteFriendUrl, focus, focusAndSelect, isBlank, log;
 
   log = utils.log;
 
@@ -69,7 +69,7 @@
     var hash, l, part1;
     l = window.location;
     part1 = l.protocol + '//' + l.host + l.pathname;
-    hash = '/addFriend/' + userAddress + '/' + secret;
+    hash = '/invitation/' + userAddress + '/' + secret;
     return part1 + '#' + hash;
   };
 
@@ -116,8 +116,29 @@
 
   FriendEditController.$inject = ['$scope', 'friendDAO', 'friendsStuffDAO', '$routeParams', '$location'];
 
+  FriendViewController = function($scope, friendDAO, friendsStuffDAO, $routeParams, $location) {
+    var friend;
+    $scope.stuffList = [];
+    friend = new Friend({
+      userAddress: $routeParams.userAddress,
+      secret: $routeParams.secret
+    });
+    $scope.friend = friend;
+    friendsStuffDAO.listStuffByFriend(friend, function(friendStuff) {
+      $scope.stuffList = friendStuff;
+      return $scope.$digest();
+    });
+    return $scope.addFriend = function() {
+      return $location.path('/addFriend/' + friend.userAddress + '/' + friend.secret);
+    };
+  };
+
+  FriendViewController.$inject = ['$scope', 'friendDAO', 'friendsStuffDAO', '$routeParams', '$location'];
+
   this.FriendsController = FriendsController;
 
   this.FriendEditController = FriendEditController;
+
+  this.FriendViewController = FriendViewController;
 
 }).call(this);

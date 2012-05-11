@@ -1,13 +1,24 @@
 (function() {
-  var AppController, focus, log;
+  var AppController, focus, log, needsUserLoggedIn;
 
   log = utils.log;
 
   focus = utils.focus;
 
+  needsUserLoggedIn = function(path) {
+    return !_.any(['invitation', 'login'], function(publicPath) {
+      return path.indexOf(publicPath) === 1;
+    });
+  };
+
   AppController = function($scope, $location, settingsDAO) {
+    var onRouteChange;
     $scope.logout = function() {
       remoteStorageUtils.deleteToken();
+      $scope.session = {
+        userAddress: null,
+        isLoggedIn: false
+      };
       return $location.path('/login');
     };
     $scope.setLoggenOn = function() {
@@ -17,24 +28,26 @@
       };
       return $scope.$digest();
     };
+    onRouteChange = function() {
+      var path;
+      path = $location.path();
+      log(path);
+      if (!$scope.session.isLoggedIn && needsUserLoggedIn($location.path())) {
+        sessionStorage.setItem('targetPath', path);
+        return $location.path('/login');
+      }
+    };
     return remoteStorageUtils.isLoggedOn(function(isLoggedOn) {
-      var href, loginHash;
       if (isLoggedOn) {
-        return $scope.setLoggenOn();
+        $scope.setLoggenOn();
       } else {
         $scope.session = {
           userAddress: null,
           isLoggedIn: false
         };
-        href = window.location.href;
-        loginHash = '#login';
-        if (href.indexOf(loginHash) > 0) {
-          sessionStorage.setItem('targetHref', window.location.href);
-        } else {
-          sessionStorage.setItem('targetHref', '#');
-        }
-        return window.location.replace(loginHash);
+        onRouteChange();
       }
+      return $scope.$on('$beforeRouteChange', onRouteChange);
     });
   };
 
