@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="span4"><h2>My Stuff</h2></div>
+    <div class="span4 rightHeaderButtons">
+        <button id="showAddStuffFormButton" class="btn" ng-click="showAddForm()" ng-hide="!isAddStuffFormHidden">Add Stuff</button>
+    </div>
+</div>
+
+<div class="addItemForm" ng-hide="isAddStuffFormHidden">
+    <h3>Add Stuff</h3>
+    <div ng-include src="'partials/my-stuff-form.html'">Toll</div>
+    <button class="btn btn-primary" ng-click="addStuff()">Add Stuff</button>
+</div>
+
+<ul class="unstyled stuffList">
+    <li ng-repeat="stuff in stuffList | orderBy:'title'">
+        <h3><a href="#/mystuff/{{stuff.id}}">{{stuff.title || "Untitled"}}</a></h3>
+        <p>{{stuff.description}}</p>
+    </li>
+</ul>

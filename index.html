@@ -1,0 +1,44 @@
+<!doctype html>
+<html ng-controller="AppController">
+<head>
+    <meta charset="utf-8">
+    <title>Shared Stuff {{session.userAddress}}</title>
+        <link rel="stylesheet" href="css/app-with-libs.min.css"/>
+</head>
+<body>
+<header>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="#">
+                    Shared Stuff
+                </a>
+                <ul class="nav pull-right">
+                    <li ng-hide="!session.isLoggedIn"><a href="" ng-click="logout()">Logout {{session.userAddress}}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <div class="row">
+        <div class="span2">
+            <div ng-include src="'partials/left-menu.html'" ng-hide="!session.isLoggedIn">Loading...</div>
+        </div>
+        <div class="span8">
+            <div ng-view></div>
+        </div>
+        <div class="span2">
+            Right Side Bar
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="lib/labjs/LAB.js"></script>
+<script type="text/javascript">
+    $LAB.script("http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js")
+            .script("js/local-libs.min.js").wait()
+            .script("js/shared-stuff.min.js");
+</script>
+</body>
+</html>
+

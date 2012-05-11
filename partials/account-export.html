@@ -1,0 +1,11 @@
+<h2>Export</h2>
+
+<div ng-include src="'partials/account-menu.html'">Loading...</div>
+
+
+<div class="itemForm inexport">
+    <button class="btn" ng-click="export()" autofocus="autofocus">Export</button>
+    <br/><br/>
+    <textarea id="exportTextarea" ng-hide="!exportedData" ng-model="exportedData"
+              app-select-on-focus></textarea>
+</div>

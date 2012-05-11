@@ -1,0 +1,82 @@
+/* app css stylesheet */
+header h1 {
+    background: #2D2D2D;
+    color: #BBBBBB;
+    margin-bottom: 0.5em;
+}
+
+h2 {
+    margin-bottom: 0.5em;
+}
+.rightHeaderButtons {
+    text-align: right;
+}
+
+.stuffList > li {
+    margin-bottom: 1.5em;
+}
+
+
+
+/* Left Menu */
+
+.nav .nav li {
+    margin-left: 1em;
+}
+
+.nav > li a{
+    /*border: 1px solid #eee;*/
+    -webkit-transition: 0.5s ease-out;
+}
+
+/* Forms */
+
+.error {
+    color: red;
+    margin-bottom: 1em;
+}
+
+.addItemForm {
+    background: #f8f8f8;
+    border-radius: 5px;
+    border: 1px solid silver;
+    padding: 1em;
+    margin-bottom: 1em;
+}
+
+.itemForm textarea,
+.itemForm input {
+    width: 98%;
+}
+
+.itemForm textarea {
+    height: 6em;
+}
+
+.editStuffButton {
+}
+
+.dropdown-menu {
+    right: 0;
+    left: auto;
+    min-width: 100px;
+}
+
+.description {
+    margin: 0 0 0.3em 0;
+}
+
+.owner {
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.friendStuffList {
+    margin-top: 1em;
+}
+
+/* Export Import*/
+
+.inexport textarea {
+    height: 20em;
+}

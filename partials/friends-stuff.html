@@ -1,0 +1,19 @@
+<div class="btn-group" style="float:right;">
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+        Sort By {{sortAttributeNames[sortAttribute]}} <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+        <li><a ng-click="sortBy('-modified')">Newest</a></li>
+        <li><a ng-click="sortBy('title')">Title</a></li>
+        <li><a ng-click="sortBy('owner.name')">Friend</a></li>
+    </ul>
+</div>
+<h2>Friends' Stuff</h2>
+
+<ul class="unstyled stuffList">
+    <li ng-repeat="stuff in stuffList | orderBy:sortAttribute">
+        <h3>{{stuff.title}}</h3>
+        <p class="description">{{stuff.description}}</p>
+        <div class="owner"> <a href="#/friends/{{stuff.owner.id}}">{{stuff.owner.name}}</a> ({{ stuff.modified | date}})</div>
+    </li>
+</ul>

@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="span4"><h2>My Friends</h2></div>
+    <div class="span4 rightHeaderButtons">
+        <button id="showAddFriendFormButton" class="btn" ng-click="showAddForm()" ng-hide="!isAddFriendFormHidden">Add Friend</button>
+        <button id="inviteFriend" class="btn" ng-click="inviteFriend()" ng-hide="!isInviteFriendFormHidden">Invite Friend</button>
+    </div>
+</div>
+
+<div class="addItemForm" ng-hide="isAddFriendFormHidden">
+    <h3>Add Friend</h3>
+    <div ng-include src="'partials/friend-form.html'">Toll</div>
+    <button class="btn btn-primary" ng-click="addFriend()">Add Friend</button>
+</div>
+
+<div class="addItemForm itemForm" ng-hide="isInviteFriendFormHidden">
+    <h3>Invite Friend</h3>
+    <label for="inviteUrl">To invite a friend and share your stuff with your friend you must send him this link:</label>
+    <input id="inviteUrl" name="inviteUrl" ng-model="inviteUrl" ng-model-instant autofocus="autofocus" required/>
+    <button class="btn btn-primary" ng-click="closeInviteFriend()" id="closeInviteFriend">OK</button>
+</div>
+
+<ul class="unstyled friendList">
+    <li ng-repeat="friend in friendList | orderBy:'title'">
+        <h3><a href="#/friends/{{friend.id}}">{{friend.name || "No Name"}}</a></h3>
+        <p>{{friend.userAddress}}</p>
+    </li>
+</ul>

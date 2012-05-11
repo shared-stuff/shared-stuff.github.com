@@ -1,0 +1,19 @@
+<form name="itemForm" class="itemForm">
+    <label for="name">Name</label>
+    <input id="name" name="name" ng-model="friend.name" ng-model-instant autofocus="autofocus" required/>
+
+    <div class="error" ng-show="itemForm.name.$error.required && showValidationErrors">Name is required!</div>
+
+    <label for="userAddress">Remote Storage Address</label>
+    <input id="userAddress" name="userAddress" ng-model="friend.userAddress" ng-model-instant
+           required type="email" placeholder="Example: shybyte@owncube.com"/>
+
+    <div class="error" ng-show="!itemForm.userAddress.$valid && showValidationErrors">Valid Remote Storage Address is
+        required! Example: shybyte@owncube.com
+    </div>
+
+    <label for="secret">Secret</label>
+    <input id="secret" name="secret" ng-model="friend.secret" ng-model-instant required/>
+    <div class="error" ng-show="itemForm.secret.$error.required && showValidationErrors">Secret is required!
+    </div>
+</form>

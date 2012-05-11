@@ -1,0 +1,7 @@
+<form name="itemForm" class="itemForm">
+<label for="title">Title</label>
+<input id="title" name="title" ng-model="stuff.title" ng-model-instant autofocus="autofocus" required/>
+<div class="error" ng-show="itemForm.title.$error.required && showValidationErrors">Title is required!</div>
+<label for="description">Description</label>
+<textarea name="description" id="description" cols="30" rows="10" ng-model="stuff.description"></textarea><br>
+</form>

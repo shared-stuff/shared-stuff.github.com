@@ -1,0 +1,27 @@
+<div class="btn-group" style="float:right;">
+    <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+        <li><a ng-click="showEditMode()">Edit</a></li>
+        <li><a ng-click="delete()">Delete</a></li>
+    </ul>
+</div>
+<h2>{{friend.name || "No Name"}}</h2></div>
+
+<div ng-hide="editMode">
+    Remote Storage Address: {{friend.userAddress}}
+</div>
+
+<div ng-hide="!editMode">
+    <div ng-include src="'partials/friend-form.html'">Loading...</div>
+    <button class="btn btn-primary" ng-click="save()">Save</button>
+</div>
+
+<ul class="unstyled stuffList friendStuffList">
+    <li ng-repeat="stuff in stuffList | orderBy:'title'">
+        <h3>{{stuff.title}}</h3>
+        <p class="description">{{stuff.description}}</p>
+        <div class="owner">{{ stuff.modified | date}}</div>
+    </li>
+</ul>
