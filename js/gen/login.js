@@ -7,8 +7,6 @@
 
   LoginController = function($scope, $location, settingsDAO) {
     log("Login");
-    $scope.session.isLoggedIn = false;
-    $scope.userAddress = "";
     return $scope.login = function() {
       var userAddress;
       try {
@@ -22,7 +20,7 @@
             targetPath = sessionStorage.getItem('targetPath') || '/';
             sessionStorage.removeItem('targetPath');
             return $scope.$apply(function() {
-              return $location.path(targetPath);
+              return $location.path(targetPath).replace();
             });
           });
         } else {

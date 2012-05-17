@@ -13,9 +13,11 @@
       'title': 'Title',
       'owner.name': 'Friend'
     };
+    $scope.status = "LOADING";
     $defer(function() {
-      return friendsStuffDAO.list(function(stuffList) {
+      return friendsStuffDAO.list(function(stuffList, status) {
         $scope.stuffList = stuffList;
+        $scope.status = status;
         return $scope.$digest();
       });
     });

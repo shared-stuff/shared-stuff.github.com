@@ -279,14 +279,17 @@
       var self;
       self = this;
       return this.friendDAO.list(function(friends) {
-        var bindUpdateToFriend, friend, _i, _len, _results;
+        var bindUpdateToFriend, friend, loadedCounter, _i, _len, _results;
+        loadedCounter = 0;
+        if (friends.length === 0) callback(self.friendsStuffList, 'NO_FRIENDS');
         _results = [];
         for (_i = 0, _len = friends.length; _i < _len; _i++) {
           friend = friends[_i];
           bindUpdateToFriend = function(friend) {
             return function(friendStuff) {
               self._updateWithLoadedItems(friend, friendStuff);
-              return callback(self.friendsStuffList);
+              loadedCounter++;
+              return callback(self.friendsStuffList, loadedCounter === friends.length ? 'DONE' : 'LOADING');
             };
           };
           _results.push(self.listStuffByFriend(friend, bindUpdateToFriend(friend)));

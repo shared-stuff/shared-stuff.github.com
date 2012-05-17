@@ -1,5 +1,5 @@
 (function() {
-  var FriendEditController, FriendViewController, FriendsController, buildInviteFriendUrl, buildPublicInviteUrl, focus, focusAndSelect, isBlank, log;
+  var FriendEditController, FriendViewController, FriendsController, ShareStuffController, buildInviteFriendUrl, buildPublicInviteUrl, focus, focusAndSelect, isBlank, log;
 
   log = utils.log;
 
@@ -140,10 +140,25 @@
 
   FriendViewController.$inject = ['$scope', 'friendDAO', 'friendsStuffDAO', '$routeParams', '$location'];
 
+  ShareStuffController = function($scope, settingsDAO) {
+    return settingsDAO.getSecret(function(secret) {
+      var userAdress;
+      userAdress = $scope.session.userAddress;
+      $scope.inviteUrl = buildInviteFriendUrl(userAdress, secret);
+      $scope.publicInviteUrl = buildPublicInviteUrl(userAdress);
+      $scope.$digest();
+      return focusAndSelect('inviteUrl');
+    });
+  };
+
+  ShareStuffController.$inject = ['$scope', 'settingsDAO'];
+
   this.FriendsController = FriendsController;
 
   this.FriendEditController = FriendEditController;
 
   this.FriendViewController = FriendViewController;
+
+  this.ShareStuffController = ShareStuffController;
 
 }).call(this);

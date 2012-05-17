@@ -15,7 +15,7 @@
 
   focusAndSelect = function(id) {
     return setTimeout(function() {
-      return $('#' + id).focus().select;
+      return $('#' + id).focus().select();
     }, 100);
   };
 

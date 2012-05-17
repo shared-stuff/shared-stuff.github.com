@@ -41,7 +41,7 @@
       if (!$scope.session.isLoggedIn && needsUserLoggedIn($location.path())) {
         sessionStorage.setItem('targetPath', path);
         return applyIfNeeded($scope, function() {
-          return $location.path('/login');
+          return $location.path('/login').replace();
         });
       }
     };
