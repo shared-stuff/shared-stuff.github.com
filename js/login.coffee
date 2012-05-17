@@ -4,7 +4,7 @@ rs = remoteStorageUtils
 LoginController = ($scope,$location,settingsDAO)->
   log("Login")
   $scope.session.isLoggedIn = false
-  $scope.userAddress = "shybyte@owncube.com"
+  $scope.userAddress = ""
 
   $scope.login = ->
     try

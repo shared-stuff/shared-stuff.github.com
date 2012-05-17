@@ -8,7 +8,7 @@
   LoginController = function($scope, $location, settingsDAO) {
     log("Login");
     $scope.session.isLoggedIn = false;
-    $scope.userAddress = "shybyte@owncube.com";
+    $scope.userAddress = "";
     return $scope.login = function() {
       var userAddress;
       try {
