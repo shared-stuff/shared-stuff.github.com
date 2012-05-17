@@ -1,5 +1,5 @@
 (function() {
-  var FriendEditController, FriendViewController, FriendsController, buildInviteFriendUrl, focus, focusAndSelect, isBlank, log;
+  var FriendEditController, FriendViewController, FriendsController, buildInviteFriendUrl, buildPublicInviteUrl, focus, focusAndSelect, isBlank, log;
 
   log = utils.log;
 
@@ -10,11 +10,9 @@
   isBlank = utils.isBlank;
 
   FriendsController = function($scope, friendDAO, friendsStuffDAO, settingsDAO, $routeParams) {
-    var session;
     $scope.friendList = [];
     $scope.isAddFriendFormHidden = true;
     $scope.isInviteFriendFormHidden = true;
-    session = $scope.session;
     $scope.inviteUrl = 'Loading...';
     friendDAO.list(function(restoredFriendList) {
       $scope.friendList = restoredFriendList;
@@ -54,7 +52,10 @@
       $scope.isInviteFriendFormHidden = false;
       $scope.isAddFriendFormHidden = true;
       return settingsDAO.getSecret(function(secret) {
-        $scope.inviteUrl = buildInviteFriendUrl(session.userAddress, secret);
+        var userAdress;
+        userAdress = $scope.session.userAddress;
+        $scope.inviteUrl = buildInviteFriendUrl(userAdress, secret);
+        $scope.publicInviteUrl = buildPublicInviteUrl(userAdress);
         $scope.$digest();
         return focusAndSelect('inviteUrl');
       });
@@ -66,10 +67,14 @@
   };
 
   buildInviteFriendUrl = function(userAddress, secret) {
+    return buildPublicInviteUrl(userAddress) + '/' + secret;
+  };
+
+  buildPublicInviteUrl = function(userAddress, secret) {
     var hash, l, part1;
     l = window.location;
     part1 = l.protocol + '//' + l.host + l.pathname;
-    hash = '/invitation/' + userAddress + '/' + secret;
+    hash = '/invitation/' + userAddress;
     return part1 + '#' + hash;
   };
 

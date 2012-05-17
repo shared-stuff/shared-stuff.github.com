@@ -15,16 +15,14 @@
         userAddress = $scope.userAddress;
         log("userAddress:" + userAddress);
         if (userAddress) {
-          return rs.connect(userAddress, function(error, storageInfo) {
-            return rs.authorize(['public', 'sharedstuff'], function(token) {
-              var targetPath;
-              localStorage.setItem('userAddress', userAddress);
-              $scope.setLoggenOn();
-              targetPath = sessionStorage.getItem('targetPath') || '/';
-              sessionStorage.removeItem('targetPath');
-              return $scope.$apply(function() {
-                return $location.path(targetPath);
-              });
+          return rs.connectAndAuthorize(userAddress, ['public', 'sharedstuff'], function() {
+            var targetPath;
+            localStorage.setItem('userAddress', userAddress);
+            $scope.setLoggenOn();
+            targetPath = sessionStorage.getItem('targetPath') || '/';
+            sessionStorage.removeItem('targetPath');
+            return $scope.$apply(function() {
+              return $location.path(targetPath);
             });
           });
         } else {

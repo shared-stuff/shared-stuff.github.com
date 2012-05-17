@@ -5,16 +5,59 @@ header h1 {
     margin-bottom: 0.5em;
 }
 
+body {
+    background: #fa0;
+    font-size: 13px;
+}
+
 h2 {
     margin-bottom: 0.5em;
 }
 .rightHeaderButtons {
-    text-align: right;
+    float: right;
 }
+
+/* Top Nav Bar*/
+
+.navbar-inner {
+    border-radius: 0px;
+}
+
+.navbar .brand {
+    color: #fa0;
+    font-family: 'Henny Penny', cursive;
+    font-size: 30px;
+    position: relative;
+    top: 8px;
+    text-shadow: 1px 2px 3px #e80;
+}
+
+.navbar ul,
+.navbar p {
+    position: relative;
+    top: 12px;
+}
+
+
+/*Stuff List*/
 
 .stuffList > li {
     margin-bottom: 1.5em;
 }
+
+.visibility {
+    color: #888;
+}
+
+.owner {
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.friendStuffList {
+    margin-top: 1.5em;
+}
+
 
 
 
@@ -30,6 +73,14 @@ h2 {
 }
 
 /* Forms */
+
+label::after {
+    content: ": ";
+}
+
+label {
+    font-weight: bold;
+}
 
 .error {
     color: red;
@@ -66,13 +117,46 @@ h2 {
     margin: 0 0 0.3em 0;
 }
 
-.owner {
-    font-style: italic;
-    opacity: 0.8;
+
+/* Login Form */
+
+h2 {
+    font-family: sans-serif;
+    color: #333;
 }
 
-.friendStuffList {
-    margin-top: 1em;
+#loginForm {
+}
+
+#loginForm input {
+    display: block;
+}
+
+#loginForm p {
+    margin: 1em 0;
+}
+
+/* Box*/
+
+.box {
+    box-shadow:  2px 2px 5px 2px rgba(0, 0, 0, 0.5);
+    background: white;
+    border-radius: 10px;
+    border: 1px solid white;
+    padding: 1em;
+}
+
+.box .box {
+    box-shadow:  none;
+    border: none;
+    padding: 0;
+}
+
+
+.boxMinHeight {
+    min-height: 500px;
+    padding-left: 2em;
+    padding-right: 2em;
 }
 
 /* Export Import*/
@@ -80,3 +164,4 @@ h2 {
 .inexport textarea {
     height: 20em;
 }
+

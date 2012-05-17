@@ -1,9 +1,11 @@
 (function() {
-  var AppController, focus, log, needsUserLoggedIn;
+  var AppController, applyIfNeeded, focus, log, needsUserLoggedIn;
 
   log = utils.log;
 
   focus = utils.focus;
+
+  applyIfNeeded = utils.applyIfNeeded;
 
   needsUserLoggedIn = function(path) {
     return !_.any(['invitation', 'login'], function(publicPath) {
@@ -13,6 +15,10 @@
 
   AppController = function($scope, $location, settingsDAO) {
     var onRouteChange;
+    $scope.session = {
+      userAddress: localStorage.getItem('userAddress'),
+      isLoggedIn: false
+    };
     $scope.logout = function() {
       remoteStorageUtils.deleteToken();
       $scope.session = {
@@ -34,7 +40,9 @@
       log(path);
       if (!$scope.session.isLoggedIn && needsUserLoggedIn($location.path())) {
         sessionStorage.setItem('targetPath', path);
-        return $location.path('/login');
+        return applyIfNeeded($scope, function() {
+          return $location.path('/login');
+        });
       }
     };
     return remoteStorageUtils.isLoggedOn(function(isLoggedOn) {

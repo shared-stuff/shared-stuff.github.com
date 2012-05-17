@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  var charsForRange, cleanObjectFromAngular, defer, doNothing, focus, focusAndSelect, isBlank, log, randomArrayElement, randomString, randomStringCharacterRange, x,
+  var applyIfNeeded, charsForRange, cleanObjectFromAngular, defer, doNothing, focus, focusAndSelect, isBlank, log, randomArrayElement, randomString, randomStringCharacterRange, x,
     __hasProp = Object.prototype.hasOwnProperty;
 
   log = function(t) {
@@ -88,6 +88,14 @@
     return !str || /^\s*$/.test(str);
   };
 
+  applyIfNeeded = function($scope, f) {
+    if ($scope.$root.$$phase) {
+      return f();
+    } else {
+      return $scope.$apply(f);
+    }
+  };
+
   this.utils = {
     log: log,
     focus: focus,
@@ -96,7 +104,8 @@
     doNothing: doNothing,
     defer: defer,
     isBlank: isBlank,
-    focusAndSelect: focusAndSelect
+    focusAndSelect: focusAndSelect,
+    applyIfNeeded: applyIfNeeded
   };
 
 }).call(this);

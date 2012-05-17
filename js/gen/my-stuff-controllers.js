@@ -1,5 +1,5 @@
 (function() {
-  var MyStuffController, MyStuffEditController, focus, isValid, log;
+  var MyStuffController, MyStuffEditController, circles, focus, isValid, log;
 
   log = utils.log;
 
@@ -9,9 +9,15 @@
     return !utils.isBlank(stuff.title);
   };
 
+  circles = {
+    friends: 'Friends',
+    'public': 'Public'
+  };
+
   MyStuffController = function($scope, stuffDAO) {
     $scope.stuffList = [];
     $scope.isAddStuffFormHidden = true;
+    $scope.circles = circles;
     stuffDAO.list(function(restoredStuffList) {
       $scope.stuffList = restoredStuffList;
       $scope.isAddStuffFormHidden = $scope.stuffList.length > 0;
@@ -41,6 +47,7 @@
   MyStuffEditController = function($scope, stuffDAO, $routeParams, $location) {
     var redirectToList;
     $scope.stuff = new Stuff();
+    $scope.circles = circles;
     stuffDAO.getItem($routeParams.id, function(stuff) {
       $scope.stuff = new Stuff(stuff);
       return $scope.$digest();

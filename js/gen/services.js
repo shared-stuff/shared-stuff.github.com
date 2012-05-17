@@ -1,10 +1,12 @@
 (function() {
   'use strict';
-  var FriendsStuffDAO, LocalStorageDAO, MY_SECRET_KEY, MY_STUFF_KEY, MyStuffDAO, PUBLIC_PREFIX, RS_CATEGORY, RemoteStorageDAO, SettingsDAO, defer, doNothing, focus, friendDAO, log, randomString, rs, settingsDAO,
+  var FriendsStuffDAO, LocalStorageDAO, MY_SECRET_KEY, MY_STUFF_KEY, MyStuffDAO, PUBLIC_KEY, PUBLIC_PREFIX, RS_CATEGORY, RemoteStorageDAO, SettingsDAO, defer, doNothing, focus, friendDAO, getFriendStuffKey, isBlank, log, randomString, rs, settingsDAO,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   log = utils.log;
+
+  isBlank = utils.isBlank;
 
   focus = utils.focus;
 
@@ -19,6 +21,8 @@
   MY_STUFF_KEY = "myStuffList";
 
   PUBLIC_PREFIX = "sharedstuff-";
+
+  PUBLIC_KEY = "public";
 
   rs = remoteStorageUtils;
 
@@ -39,6 +43,7 @@
       } else {
         return rs.getItem(this.category, this.key, function(error, data) {
           self.dataCache = JSON.parse(data || '{"items":[]}');
+          if (!self.dataCache.items) self.dataCache.items = [];
           return callback(self.dataCache.items);
         });
       }
@@ -109,10 +114,15 @@
     }
 
     MyStuffDAO.prototype.save = function(allItems, callback) {
+      var publicStuff;
       MyStuffDAO.__super__.save.call(this, allItems, callback);
-      return this.settingsDAO.getSecret(function(secret) {
+      this.settingsDAO.getSecret(function(secret) {
         return rs.setItem('public', PUBLIC_PREFIX + secret, JSON.stringify(allItems), doNothing);
       });
+      publicStuff = _.filter(allItems, function(item) {
+        return item.visibility === 'public';
+      });
+      return rs.setItem('public', PUBLIC_PREFIX + PUBLIC_KEY, JSON.stringify(publicStuff), doNothing);
     };
 
     return MyStuffDAO;
@@ -227,7 +237,7 @@
           var client;
           client = remoteStorage.createClient(storageInfo, 'public');
           if (storageInfo) {
-            return client.get(PUBLIC_PREFIX + friend.secret, function(err, data) {
+            return client.get(getFriendStuffKey(friend), function(err, data) {
               if (data) {
                 return callback(JSON.parse(data || '[]'));
               } else {
@@ -247,7 +257,7 @@
           var client;
           if (storageInfo) {
             client = remoteStorage.createClient(storageInfo, 'public');
-            return client.get(PUBLIC_PREFIX + friend.secret, function(err, data) {
+            return client.get(getFriendStuffKey(friend), function(err, data) {
               if (data) {
                 return callback([]);
               } else {
@@ -306,6 +316,10 @@
     return FriendsStuffDAO;
 
   })();
+
+  getFriendStuffKey = function(friend) {
+    return PUBLIC_PREFIX + (!isBlank(friend.secret) ? friend.secret : "public");
+  };
 
   friendDAO = new RemoteStorageDAO(RS_CATEGORY, 'myFriendsList');
 

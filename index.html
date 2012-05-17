@@ -3,6 +3,9 @@
 <head>
     <meta charset="utf-8">
     <title>Shared Stuff {{session.userAddress}}</title>
+    <link href='http://fonts.googleapis.com/css?family=Henny+Penny' rel='stylesheet' type='text/css'>
+    
+    
         <link rel="stylesheet" href="css/app-with-libs.min.css"/>
 </head>
 <body>
@@ -10,9 +13,10 @@
     <div class="navbar">
         <div class="navbar-inner">
             <div class="container">
-                <a class="brand" href="#">
+                <a class="brand pull-left" href="#">
                     Shared Stuff
                 </a>
+                <p class="navbar-text pull-left">Share Real Stuff With Friends</p>
                 <ul class="nav pull-right">
                     <li ng-hide="!session.isLoggedIn"><a href="" ng-click="logout()">Logout {{session.userAddress}}</a></li>
                 </ul>
@@ -22,11 +26,18 @@
 </header>
 <div class="container">
     <div class="row">
-        <div class="span2">
-            <div ng-include src="'partials/left-menu.html'" ng-hide="!session.isLoggedIn">Loading...</div>
+        <div ng-hide="!session.isLoggedIn">
+            <div class="span2">
+                <div class="box" ng-include src="'partials/left-menu.html'">Loading...</div>
+            </div>
+            <div class="span10">
+                <div class="box boxMinHeight" ng-view></div>
+            </div>
         </div>
-        <div class="span10">
-            <div ng-view></div>
+        <div ng-hide="session.isLoggedIn">
+            <div class="span12">
+                <div ng-view></div>
+            </div>
         </div>
     </div>
 </div>

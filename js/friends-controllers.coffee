@@ -9,7 +9,6 @@ FriendsController = ($scope,friendDAO,friendsStuffDAO,settingsDAO,$routeParams)-
   $scope.friendList = []
   $scope.isAddFriendFormHidden = true
   $scope.isInviteFriendFormHidden = true
-  session = $scope.session
   $scope.inviteUrl = 'Loading...'
 
   friendDAO.list (restoredFriendList)->
@@ -46,7 +45,9 @@ FriendsController = ($scope,friendDAO,friendsStuffDAO,settingsDAO,$routeParams)-
     $scope.isInviteFriendFormHidden = false
     $scope.isAddFriendFormHidden = true
     settingsDAO.getSecret (secret) ->
-      $scope.inviteUrl =  buildInviteFriendUrl(session.userAddress,secret)
+      userAdress = $scope.session.userAddress
+      $scope.inviteUrl =  buildInviteFriendUrl(userAdress,secret)
+      $scope.publicInviteUrl =  buildPublicInviteUrl(userAdress)
       $scope.$digest();
       focusAndSelect('inviteUrl')
 
@@ -57,11 +58,13 @@ FriendsController = ($scope,friendDAO,friendsStuffDAO,settingsDAO,$routeParams)-
 
 
 buildInviteFriendUrl = (userAddress,secret) ->
+  return buildPublicInviteUrl(userAddress)+'/'+secret
+
+buildPublicInviteUrl = (userAddress,secret) ->
   l = window.location
   part1 = l.protocol+'//'+l.host+ l.pathname
-  hash = '/invitation/'+userAddress+'/'+secret
+  hash = '/invitation/'+userAddress
   return part1+'#'+hash
-
 
 
 FriendsController.$inject = ['$scope','friendDAO','friendsStuffDAO','settingsDAO','$routeParams']

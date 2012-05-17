@@ -1,9 +1,5 @@
-<div class="row">
-    <div class="span4"><h2>My Stuff</h2></div>
-    <div class="span6 rightHeaderButtons">
-        <button id="showAddStuffFormButton" class="btn" ng-click="showAddForm()" ng-hide="!isAddStuffFormHidden">Add Stuff</button>
-    </div>
-</div>
+<button style="float:right;" id="showAddStuffFormButton" class="btn rightHeaderButtons" ng-click="showAddForm()" ng-hide="!isAddStuffFormHidden">Add Stuff</button>
+<h2>My Stuff</h2>
 
 <div class="addItemForm" ng-hide="isAddStuffFormHidden">
     <h3>Add Stuff</h3>
@@ -11,9 +7,14 @@
     <button class="btn btn-primary" ng-click="addStuff()">Add Stuff</button>
 </div>
 
+<div class="alert alert-info" ng-hide="stuffList.length>0">
+    You have no stuff? I can't believe that. Please add something!
+</div>
+
 <ul class="unstyled stuffList">
     <li ng-repeat="stuff in stuffList | orderBy:'title'">
         <h3><a href="#/mystuff/{{stuff.id}}">{{stuff.title || "Untitled"}}</a></h3>
-        <p>{{stuff.description}}</p>
+        <p class="description">{{stuff.description}}</p>
+        <span ng-hide="!stuff.visibility" class="owner visibility">Public</span>
     </li>
 </ul>
