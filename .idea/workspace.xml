@@ -2,37 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bb8b6da8-3f63-4112-a4ab-4d66d8db439b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/img/loading.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/partials/about-text.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/partials/share-stuff.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/app-with-libs.min.css" afterPath="$PROJECT_DIR$/css/app-with-libs.min.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/app.css" afterPath="$PROJECT_DIR$/css/app.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/app.min.css" afterPath="$PROJECT_DIR$/css/app.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app-controllers.coffee" afterPath="$PROJECT_DIR$/js/app-controllers.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app.js" afterPath="$PROJECT_DIR$/js/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/friends-controllers.coffee" afterPath="$PROJECT_DIR$/js/friends-controllers.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/friends-stuff-controllers.coffee" afterPath="$PROJECT_DIR$/js/friends-stuff-controllers.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/gen/app-controllers.js" afterPath="$PROJECT_DIR$/js/gen/app-controllers.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/gen/friends-controllers.js" afterPath="$PROJECT_DIR$/js/gen/friends-controllers.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/gen/friends-stuff-controllers.js" afterPath="$PROJECT_DIR$/js/gen/friends-stuff-controllers.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/gen/login.js" afterPath="$PROJECT_DIR$/js/gen/login.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/gen/services.js" afterPath="$PROJECT_DIR$/js/gen/services.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/gen/utils.js" afterPath="$PROJECT_DIR$/js/gen/utils.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/login.coffee" afterPath="$PROJECT_DIR$/js/login.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/services.coffee" afterPath="$PROJECT_DIR$/js/services.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/shared-stuff-with-libs.min.js" afterPath="$PROJECT_DIR$/js/shared-stuff-with-libs.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/shared-stuff.min.js" afterPath="$PROJECT_DIR$/js/shared-stuff.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/utils.coffee" afterPath="$PROJECT_DIR$/js/utils.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/about.html" afterPath="$PROJECT_DIR$/partials/about.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/friend-edit.html" afterPath="$PROJECT_DIR$/partials/friend-edit.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/friend-form.html" afterPath="$PROJECT_DIR$/partials/friend-form.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/friend.html" afterPath="$PROJECT_DIR$/partials/friend.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/about-text.html" afterPath="$PROJECT_DIR$/partials/about-text.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/friends-stuff.html" afterPath="$PROJECT_DIR$/partials/friends-stuff.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/friends.html" afterPath="$PROJECT_DIR$/partials/friends.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/left-menu.html" afterPath="$PROJECT_DIR$/partials/left-menu.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/login.html" afterPath="$PROJECT_DIR$/partials/login.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/my-stuff.html" afterPath="$PROJECT_DIR$/partials/my-stuff.html" />
     </list>
     <ignored path="shared-stuff.github.com.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -75,7 +50,7 @@
       <file leaf-file-name="friends-stuff.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/partials/friends-stuff.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="5" selection-start="1480" selection-end="1480" vertical-scroll-proportion="0.7536467">
+            <state line="15" column="23" selection-start="619" selection-end="619" vertical-scroll-proportion="0.34359807">
               <folding />
             </state>
           </provider>
@@ -264,7 +239,11 @@
       <created>1337245345234</created>
       <updated>1337245345234</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Share Stuff Page">
+      <created>1337261651766</created>
+      <updated>1337261651766</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -328,7 +307,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Orange rules" />
+    <option name="LAST_COMMIT_MESSAGE" value="Share Stuff Page" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -344,6 +323,7 @@
     <MESSAGE value="First deployment of the build app" />
     <MESSAGE value="Second deployment of the build app" />
     <MESSAGE value="Orange rules" />
+    <MESSAGE value="Share Stuff Page" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -370,7 +350,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/partials/friends-stuff.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="5" selection-start="1480" selection-end="1480" vertical-scroll-proportion="0.7536467">
+        <state line="15" column="23" selection-start="619" selection-end="619" vertical-scroll-proportion="0.34359807">
           <folding />
         </state>
       </provider>
