@@ -24,6 +24,7 @@
         });
         $scope.isAddFriendFormHidden = false;
       }
+      $scope.status = 'LOADED';
       return $scope.$digest();
     });
     $scope.showAddForm = function() {

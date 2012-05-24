@@ -74,6 +74,27 @@ applyIfNeeded = ($scope,f)->
   else
     $scope.$apply(f)
 
+
+collectTokenStringFromItem = (item) ->
+  searchString = ''
+  for key,value of item
+    if (typeof value)  == 'string'
+      searchString += ' '+value.toLowerCase()
+    else if (typeof value)  == 'object'
+      searchString += ' '+collectTokenStringFromItem(value)
+  return searchString
+
+matchesSearchTokens = (item,searchTokens) ->
+  tokenString = collectTokenStringFromItem(item)
+  return _.all(searchTokens, (sw) -> tokenString.indexOf(sw)>=0)
+
+search = (list,query) ->
+  if !isBlank(query)
+    searchTokens = query.toLowerCase().split(/\s+/g)
+    return _.filter(list, (item) -> matchesSearchTokens(item,searchTokens))
+  else
+    return list
+
 this.utils =
   log: log
   focus: focus
@@ -84,3 +105,4 @@ this.utils =
   isBlank: isBlank
   focusAndSelect: focusAndSelect
   applyIfNeeded: applyIfNeeded
+  search: search

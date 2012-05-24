@@ -43,7 +43,11 @@
       } else {
         return rs.getItem(this.category, this.key, function(error, data) {
           self.dataCache = JSON.parse(data || '{"items":[]}');
-          if (!self.dataCache.items) self.dataCache.items = [];
+          if (!self.dataCache.items) {
+            self.dataCache = {
+              items: []
+            };
+          }
           return callback(self.dataCache.items);
         });
       }
@@ -275,6 +279,10 @@
       }
     };
 
+    FriendsStuffDAO.prototype.clearCache = function() {
+      return this.friendsStuffList = [];
+    };
+
     FriendsStuffDAO.prototype.list = function(callback) {
       var self;
       self = this;
@@ -289,7 +297,7 @@
             return function(friendStuff) {
               self._updateWithLoadedItems(friend, friendStuff);
               loadedCounter++;
-              return callback(self.friendsStuffList, loadedCounter === friends.length ? 'DONE' : 'LOADING');
+              return callback(self.friendsStuffList, loadedCounter === friends.length ? 'LOADED' : 'LOADING');
             };
           };
           _results.push(self.listStuffByFriend(friend, bindUpdateToFriend(friend)));

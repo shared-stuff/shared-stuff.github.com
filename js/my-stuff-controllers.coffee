@@ -17,6 +17,7 @@ MyStuffController = ($scope, stuffDAO)->
   stuffDAO.list (restoredStuffList)->
     $scope.stuffList = restoredStuffList
     $scope.isAddStuffFormHidden = $scope.stuffList.length > 0
+    $scope.status = "LOADED"
     $scope.$digest()
 
   $scope.showAddForm = ()->
@@ -30,7 +31,6 @@ MyStuffController = ($scope, stuffDAO)->
       $scope.stuffList.push(new Stuff($scope.stuff))
       stuffDAO.save($scope.stuffList, ->)
       $scope.stuff = new Stuff()
-      ;
       $scope.isAddStuffFormHidden = true
       focus('showAddStuffFormButton')
     else
@@ -57,6 +57,7 @@ MyStuffEditController = ($scope, stuffDAO, $routeParams, $location)->
 
   $scope.save = ()->
     if isValid($scope.stuff)
+      log($scope.stuff)
       $scope.stuff.modify()
       stuffDAO.saveItem($scope.stuff, redirectToList)
     else

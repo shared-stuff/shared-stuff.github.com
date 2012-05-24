@@ -3,6 +3,8 @@ class Stuff
     @title = props?.title || ''
     @description = props?.description || ''
     @visibility = props?.visibility || "friends"
+    @link = props?.link || ''
+    @image = props?.image || ''
     time = new Date().getTime()
     @id = props?.id || ''+time
     @created = props?.created || time

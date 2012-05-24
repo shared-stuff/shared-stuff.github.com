@@ -21,6 +21,7 @@
     stuffDAO.list(function(restoredStuffList) {
       $scope.stuffList = restoredStuffList;
       $scope.isAddStuffFormHidden = $scope.stuffList.length > 0;
+      $scope.status = "LOADED";
       return $scope.$digest();
     });
     $scope.showAddForm = function() {
@@ -59,6 +60,7 @@
     };
     $scope.save = function() {
       if (isValid($scope.stuff)) {
+        log($scope.stuff);
         $scope.stuff.modify();
         return stuffDAO.saveItem($scope.stuff, redirectToList);
       } else {

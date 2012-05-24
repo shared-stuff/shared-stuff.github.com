@@ -7,14 +7,16 @@
     <button class="btn btn-primary" ng-click="addStuff()">Add Stuff</button>
 </div>
 
-<div class="alert alert-info" ng-hide="stuffList.length>0">
+<div class="alert alert-info" ng-show="status=='LOADED' && stuffList.length==0">
     You have no stuff? I can't believe that. Please add something!
 </div>
 
 <ul class="unstyled stuffList">
     <li ng-repeat="stuff in stuffList | orderBy:'title'">
         <h3><a href="#/mystuff/{{stuff.id}}">{{stuff.title || "Untitled"}}</a></h3>
+        <span stuff-image src="{{stuff.image}}"/>
         <p class="description" ng-bind-html="stuff.description | linky"></p>
-        <span ng-hide="!stuff.visibility" class="owner visibility">Public</span>
+        <span ng-show="stuff.visibility == 'public'" class="owner visibility">Public</span>
+        <a ng-show="stuff.link" href="{{stuff.link}}" target="link">External Link</a>
     </li>
 </ul>
