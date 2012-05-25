@@ -9,14 +9,14 @@
 </div>
 <h2>{{friend.name || "No Name"}}</h2></div>
 
-<div ng-hide="editMode">
-    Remote Storage Address: {{friend.userAddress}}
-</div>
+<div ng-include src="'partials/profile-display.html'">Loading...</div>
 
-<div ng-hide="!editMode">
+<div ng-hide="!editMode" class="clearLeft addItemForm">
     <div ng-include src="'partials/friend-form.html'">Loading...</div>
     <button class="btn btn-primary" ng-click="save()">Save</button>
 </div>
+
+<h2 class="clearLeft" style="margin-top: 1em;">{{friend.name || "No Name"}}'s Stuff:</h2>
 
 <ul class="unstyled stuffList friendStuffList">
     <li ng-repeat="stuff in stuffList | orderBy:'title'">

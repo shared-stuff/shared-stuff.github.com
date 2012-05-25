@@ -1,5 +1,5 @@
 (function() {
-  var FriendEditController, FriendViewController, FriendsController, ShareStuffController, buildInviteFriendUrl, buildPublicInviteUrl, focus, focusAndSelect, isBlank, log;
+  var FriendEditController, FriendViewController, FriendsController, ShareStuffController, applyIfNeeded, buildInviteFriendUrl, buildPublicInviteUrl, focus, focusAndSelect, isBlank, log;
 
   log = utils.log;
 
@@ -8,6 +8,8 @@
   focusAndSelect = utils.focusAndSelect;
 
   isBlank = utils.isBlank;
+
+  applyIfNeeded = utils.applyIfNeeded;
 
   FriendsController = function($scope, friendDAO, friendsStuffDAO, settingsDAO, $routeParams) {
     $scope.friendList = [];
@@ -19,6 +21,7 @@
       $scope.isAddFriendFormHidden = $scope.friendList.length > 0;
       if ($routeParams.userAddress) {
         $scope.friend = new Friend({
+          name: $routeParams.name,
           userAddress: $routeParams.userAddress,
           secret: $routeParams.secret
         });
@@ -81,20 +84,28 @@
 
   FriendsController.$inject = ['$scope', 'friendDAO', 'friendsStuffDAO', 'settingsDAO', '$routeParams'];
 
-  FriendEditController = function($scope, friendDAO, friendsStuffDAO, $routeParams, $location) {
-    var redirectToList;
+  FriendEditController = function($scope, friendDAO, friendsStuffDAO, profileDAO, $routeParams, $location) {
+    var loadFriend, redirectToList;
     $scope.friend = new Friend();
     $scope.editMode = false;
     $scope.stuffList = [];
+    $scope.profile = {};
     $scope.showValidationErrors = true;
-    friendDAO.getItem($routeParams.id, function(friend) {
-      $scope.friend = new Friend(friend);
-      $scope.$digest();
-      return friendsStuffDAO.listStuffByFriend(friend, function(friendStuff) {
-        $scope.stuffList = friendStuff;
-        return $scope.$digest();
+    loadFriend = function() {
+      return friendDAO.getItem($routeParams.id, function(friend) {
+        $scope.friend = new Friend(friend);
+        $scope.$digest();
+        friendsStuffDAO.listStuffByFriend(friend, function(friendStuff) {
+          $scope.stuffList = friendStuff;
+          return $scope.$digest();
+        });
+        return profileDAO.getByFriend(friend, function(profile) {
+          $scope.profile = new Profile(profile);
+          return $scope.$digest();
+        });
       });
-    });
+    };
+    loadFriend();
     redirectToList = function() {
       return $scope.$apply(function() {
         return $location.path('/friends');
@@ -104,7 +115,10 @@
       $scope.friend.sanitize();
       return friendsStuffDAO.validateFriend($scope.friend, function(errors) {
         if (errors.length === 0) {
-          return friendDAO.saveItem($scope.friend, redirectToList);
+          return friendDAO.saveItem($scope.friend, function() {
+            $scope.editMode = false;
+            return loadFriend();
+          });
         } else {
           return window.alert(errors.join(',') + " seems invalid");
         }
@@ -120,9 +134,9 @@
     };
   };
 
-  FriendEditController.$inject = ['$scope', 'friendDAO', 'friendsStuffDAO', '$routeParams', '$location'];
+  FriendEditController.$inject = ['$scope', 'friendDAO', 'friendsStuffDAO', 'profileDAO', '$routeParams', '$location'];
 
-  FriendViewController = function($scope, friendDAO, friendsStuffDAO, $routeParams, $location) {
+  FriendViewController = function($scope, friendDAO, friendsStuffDAO, profileDAO, $routeParams, $location) {
     var friend;
     $scope.stuffList = [];
     friend = new Friend({
@@ -130,16 +144,26 @@
       secret: $routeParams.secret
     });
     $scope.friend = friend;
+    $scope.profile = {};
     friendsStuffDAO.listStuffByFriend(friend, function(friendStuff) {
       $scope.stuffList = friendStuff;
       return $scope.$digest();
     });
+    profileDAO.getByFriend(friend, function(profile) {
+      $scope.profile = new Profile(profile);
+      if (profile.name) {
+        friend.name = profile.name;
+      } else {
+        friend.name = friend.userAddress.replace(/@.*$/, '') || 'unkown';
+      }
+      return $scope.$digest();
+    });
     return $scope.addFriend = function() {
-      return $location.path('/addFriend/' + friend.userAddress + '/' + friend.secret);
+      return $location.path('/addFriend/' + friend.name + '/' + friend.userAddress + '/' + friend.secret);
     };
   };
 
-  FriendViewController.$inject = ['$scope', 'friendDAO', 'friendsStuffDAO', '$routeParams', '$location'];
+  FriendViewController.$inject = ['$scope', 'friendDAO', 'friendsStuffDAO', 'profileDAO', '$routeParams', '$location'];
 
   ShareStuffController = function($scope, settingsDAO) {
     return settingsDAO.getSecret(function(secret) {

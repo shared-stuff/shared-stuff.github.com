@@ -13,14 +13,15 @@ angular.module('myApp', ['ngSanitize','myApp.filters', 'myApp.services', 'myApp.
 
     $routeProvider.when('/friends', {template: 'partials/friends.html', controller: FriendsController});
     $routeProvider.when('/friends/:id', {template: 'partials/friend-edit.html', controller: FriendEditController});
-    $routeProvider.when('/addFriend/:userAddress/:secret', {template: 'partials/friends.html', controller: FriendsController});
-    $routeProvider.when('/addFriend/:userAddress', {template: 'partials/friends.html', controller: FriendsController});
+    $routeProvider.when('/addFriend/:name/:userAddress/:secret', {template: 'partials/friends.html', controller: FriendsController});
+    $routeProvider.when('/addFriend/:name/:userAddress', {template: 'partials/friends.html', controller: FriendsController});
     $routeProvider.when('/invitation/:userAddress/:secret', {template: 'partials/friend.html', controller: FriendViewController});
     $routeProvider.when('/invitation/:userAddress', {template: 'partials/friend.html', controller: FriendViewController});
 
     $routeProvider.when('/friends-stuff', {template: 'partials/friends-stuff.html', controller: FriendsStuffController});
 
-    $routeProvider.when('/account', {template: 'partials/account.html', controller: AccountController});
+    $routeProvider.when('/account', {template: 'partials/profile.html', controller: ProfileController});
+    $routeProvider.when('/profile', {template: 'partials/profile.html', controller: ProfileController});
     $routeProvider.when('/export', {template: 'partials/account-export.html', controller: ExportController});
     $routeProvider.when('/import', {template: 'partials/account-import.html', controller: ImportController});
     $routeProvider.when('/settings', {template: 'partials/account-settings.html', controller: AccountController});

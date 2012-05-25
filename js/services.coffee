@@ -10,6 +10,7 @@ RS_CATEGORY = "sharedstuff"
 MY_STUFF_KEY = "myStuffList"
 PUBLIC_PREFIX = "sharedstuff-"
 PUBLIC_KEY = "public"
+PROFILE_KEY = PUBLIC_PREFIX+"profile"
 
 rs = remoteStorageUtils
 
@@ -101,7 +102,6 @@ class LocalStorageDAO
     @save(_.without(items, oldItem))
 
 
-MY_SECRET_KEY = "mySecret"
 class SettingsDAO
   constructor: () ->
     @settings = null
@@ -118,9 +118,7 @@ class SettingsDAO
           self.settings = settings
           if (!settings.secret)
             settings.secret = randomString(20)
-            rs.setItem(RS_CATEGORY, self.key, JSON.stringify(settings), ()->
-                callback(settings)
-            )
+            self.saveSettings(callback)
           else
             callback(settings)
       )
@@ -130,26 +128,78 @@ class SettingsDAO
     @readSettings (settings)->
       callback(settings.secret)
 
+  saveSettings: (callback) ->
+    self = this
+    rs.setItem(RS_CATEGORY, self.key, JSON.stringify(self.settings), ()->
+      callback(self.settings)
+    )
+
+class ProfileDAO
+  constructor: (@publicRemoteStorageService) ->
+    @profile = null
+    @key = PROFILE_KEY
+
+  load: (callback) ->
+    self = this
+    if self.profile
+      defer ->
+        callback(self.profile)
+    else
+      rs.getItem('public', self.key, (error, data)->
+        self.profile = JSON.parse(data || '{}')
+        callback(new Profile(self.profile))
+      )
+
+  save: (profile,callback) ->
+    self = this
+    self.profile = profile
+    rs.setItem('public', self.key, JSON.stringify(self.profile), ()->
+      callback(self.profile)
+    )
+
+  getByFriend: (friend,callback) ->
+    @publicRemoteStorageService.get(friend.userAddress,@key,{}, (result)->
+      callback(new Profile(result))
+    )
+
+
+class PublicRemoteStorageService
+  constructor: ->
+    @clientByUserAddress = {}
+
+  get: (userAddress,key,defaultValue,callback) ->
+    self = this
+    if !userAddress
+      log("Missing UserAdress!")
+      callback(defaultValue)
+    else if @clientByUserAddress[userAddress]
+      @getByClient(@clientByUserAddress[userAddress],key,defaultValue,callback)
+    else
+      remoteStorage.getStorageInfo(userAddress, (error, storageInfo) ->
+        if storageInfo
+          client = remoteStorage.createClient(storageInfo, 'public')
+          self.clientByUserAddress[userAddress] = client
+          self.getByClient(client,key,defaultValue,callback)
+        else
+          log(error)
+          callback(defaultValue,error)
+      )
+
+  #private
+  getByClient: (client,key,defaultValue,callback) ->
+    client.get(key, (err, data) ->
+      if data
+        callback(JSON.parse(data))
+      else
+        callback(defaultValue)
+    )
 
 class FriendsStuffDAO
-  constructor: (@friendDAO) ->
+  constructor: (@friendDAO,@publicRemoteStorageDAO) ->
     @friendsStuffList = []
 
   listStuffByFriend: (friend, callback) ->
-    if friend.userAddress
-      remoteStorage.getStorageInfo(friend.userAddress, (error, storageInfo) ->
-          client = remoteStorage.createClient(storageInfo, 'public')
-          if storageInfo
-            client.get(getFriendStuffKey(friend), (err, data) ->
-                if data
-                  callback(JSON.parse(data || '[]'))
-                else
-                #log(err)
-                  callback([])
-            )
-          else
-            log(error)
-      )
+    @publicRemoteStorageDAO.get(friend.userAddress,getFriendStuffKey(friend),[], callback)
 
   # returns a list of invalid attributes
   validateFriend: (friend, callback) ->
@@ -203,10 +253,12 @@ getFriendStuffKey = (friend) -> PUBLIC_PREFIX + (if !isBlank(friend.secret) then
 
 friendDAO = new RemoteStorageDAO(RS_CATEGORY, 'myFriendsList')
 settingsDAO = new SettingsDAO()
+publicRemoteStorageService = new PublicRemoteStorageService()
 
 angular.module('myApp.services', []).
 value('version', '0.1').
 value('settingsDAO', settingsDAO).
 value('stuffDAO', new MyStuffDAO(RS_CATEGORY, MY_STUFF_KEY, settingsDAO)).
 value('friendDAO', friendDAO).
-value('friendsStuffDAO', new FriendsStuffDAO(friendDAO))
+value('friendsStuffDAO', new FriendsStuffDAO(friendDAO,publicRemoteStorageService)).
+value('profileDAO',new ProfileDAO(publicRemoteStorageService))
