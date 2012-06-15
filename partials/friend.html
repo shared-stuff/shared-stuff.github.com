@@ -1,4 +1,4 @@
-<div class="box">
+<div class="box" xmlns="http://www.w3.org/1999/html">
 
     <h2>Invitation from {{friend.name || "No Name"}}</h2>
 
@@ -7,7 +7,11 @@
         {{friend.name}} wants to share some real stuff with you!
     </p>
 
-    <button class="btn btn-primary" ng-click="addFriend()" ng-hide="!session.isLoggedIn">Add to my friends</button>
+    <p ng-show="existingFriend">
+        It seems that <a href="#/friends/{{existingFriend.id}}">{{friend.name}}</a> is already in your list of friends.
+    </p>
+
+    <button class="btn btn-primary" ng-click="addFriend()" ng-hide="!session.isLoggedIn || existingFriend">Add to my friends</button>
 
     <div ng-hide="session.isLoggedIn">
         <p>In order to add {{friend.name}} to your friends and share your stuff with your friends you need to login to
@@ -19,11 +23,12 @@
 
     <ul class="unstyled stuffList friendStuffList">
         <li ng-repeat="stuff in stuffList | orderBy:'title'">
-            <h3>{{stuff.title}}</h3>
-            <span stuff-image src="{{stuff.image}}"/>
-            <p class="description" ng-bind-html="stuff.description | urlize"></p>
-            <div class="owner">{{stuff.categories}} <a ng-show="stuff.link" href="{{stuff.link}}" target="link">External Link</a></div>
+            <div friend-stuff  item="stuff"/>
         </li>
     </ul>
+
+    <div class="alert alert-info" ng-show="stuffList.length==0 && status=='LOADED'">
+        It seems that {{friend.name}} has no Stuff. You could ask {{friend.name}} to add some stuff!
+    </div>
 
 </div>

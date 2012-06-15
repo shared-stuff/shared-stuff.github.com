@@ -1,28 +1,54 @@
 (function() {
-  var Friend, Profile, Stuff, isBlank;
+  var Friend, Profile, Stuff, copyUnknownProps, isBlank;
 
   isBlank = utils.isBlank;
+
+  copyUnknownProps = function(source, target) {
+    var k, v, _results;
+    _results = [];
+    for (k in source) {
+      v = source[k];
+      if (!(k in target)) {
+        _results.push(target[k] = v);
+      } else {
+        _results.push(void 0);
+      }
+    }
+    return _results;
+  };
 
   Stuff = (function() {
 
     function Stuff(props) {
       var time;
-      this.title = (props != null ? props.title : void 0) || '';
-      this.description = (props != null ? props.description : void 0) || '';
-      this.visibility = (props != null ? props.visibility : void 0) || 'friends';
-      this.sharingTypes = (props != null ? props.sharingTypes : void 0) || ['rent'];
-      this.categories = (props != null ? props.categories : void 0) || '';
-      this.link = (props != null ? props.link : void 0) || '';
-      this.image = (props != null ? props.image : void 0) || '';
+      if (props == null) props = {};
+      this.title = props.title || '';
+      this.description = props.description || '';
+      this.visibility = props.visibility || 'friends';
+      this.sharingTypes = props.sharingTypes || ['rent'];
+      this.sharingDirection = props.sharingDirection || 'give';
+      this.categories = props.categories || '';
+      this.link = props.link || '';
+      this.image = props.image || '';
       time = new Date().getTime();
-      this.id = (props != null ? props.id : void 0) || '' + time;
-      this.created = (props != null ? props.created : void 0) || time;
-      this.modified = (props != null ? props.modified : void 0) || this.created;
+      this.id = props.id || '' + time;
+      this.created = props.created || time;
+      this.modified = props.modified || this.created;
+      copyUnknownProps(props, this);
     }
 
     Stuff.prototype.modify = function() {
       return this.modified = new Date().getTime();
     };
+
+    Stuff.prototype.getLocation = function() {
+      var _ref;
+      return this.location || ((_ref = this.owner) != null ? _ref.location : void 0) || '';
+    };
+
+    Stuff.sharingTypeValues = ['rent', 'gift', 'use-together'];
+
+    Stuff.sharingDirectionValues = ['give', 'wish'];
 
     return Stuff;
 
@@ -31,11 +57,12 @@
   Friend = (function() {
 
     function Friend(props) {
-      props = props || {};
+      if (props == null) props = {};
       this.id = props.id || '' + new Date().getTime();
       this.name = props.name || props.userAddress || '';
       this.userAddress = props.userAddress || '';
       this.secret = props.secret || '';
+      copyUnknownProps(props, this);
     }
 
     Friend.prototype.sanitize = function() {
@@ -49,10 +76,12 @@
   Profile = (function() {
 
     function Profile(props) {
-      props = props || {};
+      if (props == null) props = {};
       this.name = props.name || '';
       this.email = props.email || '';
       this.image = props.image || '';
+      this.location = props.location || '';
+      copyUnknownProps(props, this);
     }
 
     Profile.isEmpty = function() {

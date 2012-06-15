@@ -8,6 +8,18 @@
         <li><a ng-click="sortBy('owner.name')">Friend</a></li>
     </ul>
 </div>
+
+<div class="btn-group rightHeaderButtons">
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+        Search in {{sharingDirectionNames[sharingDirection]}} <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+        <li><a ng-click="setSharingDirection('giveAndWish')">Give & Wish</a></li>
+        <li><a ng-click="setSharingDirection('give')">Give</a></li>
+        <li><a ng-click="setSharingDirection('wish')">Wish</a></li>
+    </ul>
+</div>
+
 <h2>Friends' Stuff</h2>
 
 <img src="img/loading.gif" alt="Loading..." ng-show="status=='LOADING'">
@@ -34,12 +46,6 @@
 
 <ul class="unstyled stuffList">
     <li ng-repeat="stuff in filteredStuffList | orderBy:sortAttribute">
-
-        <h3>{{stuff.title}}</h3>
-        <span stuff-image src="{{stuff.image}}"/>
-        <p class="description" ng-bind-html="stuff.description | urlize"></p>
-
-        <div class="owner">{{stuff.categories}} <a href="#/friends/{{stuff.owner.id}}">{{stuff.owner.name}}</a> ({{ stuff.modified | date}})
-            <a ng-show="stuff.link" href="{{stuff.link}}" target="link">External Link</a></div>
+        <div friend-stuff  item="stuff"/>
     </li>
 </ul>

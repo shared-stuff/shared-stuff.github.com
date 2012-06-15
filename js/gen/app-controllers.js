@@ -50,6 +50,10 @@
         return applyIfNeeded($scope, function() {
           return $location.path('/login').replace();
         });
+      } else if (path === '/login' && $scope.session.isLoggedIn) {
+        return applyIfNeeded($scope, function() {
+          return $location.path('/friends-stuff').replace();
+        });
       }
     };
     if ($scope.session.userAddress) {
@@ -64,12 +68,12 @@
           applyIfNeeded($scope, function() {
             return $scope.isAppLoaded = true;
           });
-          onRouteChange();
         }
-        return $scope.$on('$beforeRouteChange', onRouteChange);
+        onRouteChange();
+        return $scope.$on('$routeChangeStart', onRouteChange);
       });
     } else {
-      $scope.$on('$beforeRouteChange', onRouteChange);
+      $scope.$on('$routeChangeStart', onRouteChange);
       return $scope.isAppLoaded = true;
     }
   };

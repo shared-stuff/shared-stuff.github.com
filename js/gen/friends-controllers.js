@@ -15,6 +15,7 @@
     $scope.friendList = [];
     $scope.isAddFriendFormHidden = true;
     $scope.isInviteFriendButtonShown = true;
+    $scope.friend = new Friend();
     friendDAO.list(function(restoredFriendList) {
       $scope.friendList = restoredFriendList;
       $scope.isAddFriendFormHidden = $scope.friendList.length > 0;
@@ -38,7 +39,6 @@
       $scope.isAddFriendFormHidden = true;
       return $scope.isInviteFriendButtonShown = true;
     };
-    $scope.friend = new Friend();
     $scope.addFriend = function() {
       $scope.friend.sanitize();
       return friendsStuffDAO.validateFriend($scope.friend, function(errors) {
@@ -58,6 +58,17 @@
     $scope.inviteFriend = function() {
       return $location.path('/share-stuff');
     };
+    $scope.$watch('friend.userAddress', function(newValue) {
+      if (!isBlank(newValue)) {
+        return friendDAO.getItemBy('userAddress', newValue, function(existingFriendArg) {
+          return applyIfNeeded($scope, function() {
+            return $scope.existingFriend = existingFriendArg;
+          });
+        });
+      } else {
+        return $scope.existingFriend = void 0;
+      }
+    });
     return focus('showAddFriendFormButton');
   };
 
@@ -82,12 +93,14 @@
     $scope.stuffList = [];
     $scope.profile = {};
     $scope.showValidationErrors = true;
+    $scope.status = "LOADING";
     loadFriend = function() {
       return friendDAO.getItem($routeParams.id, function(friend) {
         $scope.friend = new Friend(friend);
         $scope.$digest();
         friendsStuffDAO.listStuffByFriend(friend, function(friendStuff) {
           $scope.stuffList = friendStuff;
+          $scope.status = "LOADED";
           return $scope.$digest();
         });
         return profileDAO.getByFriend(friend, function(profile) {
@@ -149,11 +162,19 @@
       secret: $routeParams.secret
     });
     $scope.friend = friend;
+    $scope.existingFriend = void 0;
     $scope.profile = {};
+    $scope.status = "LOADING";
     friendsStuffDAO.listStuffByFriend(friend, function(friendStuff) {
       $scope.stuffList = friendStuff;
+      $scope.status = "LOADED";
       return $scope.$digest();
     });
+    if ($scope.session.isLoggedIn) {
+      friendDAO.getItemBy('userAddress', friend.userAddress, function(existingFriendArg) {
+        return $scope.existingFriend = existingFriendArg;
+      });
+    }
     profileDAO.getByFriend(friend, function(profile) {
       $scope.profile = new Profile(profile);
       if (profile.name) {

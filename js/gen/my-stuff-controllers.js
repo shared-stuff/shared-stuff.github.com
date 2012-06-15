@@ -14,7 +14,7 @@
     'public': 'Public'
   };
 
-  MyStuffController = function($scope, stuffDAO) {
+  MyStuffController = function($scope, stuffDAO, profileDAO) {
     $scope.stuffList = [];
     $scope.isAddStuffFormHidden = true;
     $scope.circles = circles;
@@ -24,6 +24,11 @@
       'title': 'Title',
       'owner.name': 'Friend'
     };
+    $scope.sharingDirections = Stuff.sharingDirectionValues;
+    profileDAO.load(function(profile) {
+      $scope.profile = profile;
+      return $scope.$digest();
+    });
     stuffDAO.list(function(restoredStuffList) {
       $scope.stuffList = restoredStuffList;
       $scope.isAddStuffFormHidden = $scope.stuffList.length > 0;
@@ -61,14 +66,21 @@
     return focus('showAddStuffFormButton');
   };
 
-  MyStuffController.$inject = ['$scope', 'stuffDAO'];
+  MyStuffController.$inject = ['$scope', 'stuffDAO', 'profileDAO'];
 
-  MyStuffEditController = function($scope, stuffDAO, $routeParams, $location) {
+  MyStuffEditController = function($scope, stuffDAO, profileDAO, $routeParams, $location) {
     var redirectToList;
     $scope.stuff = new Stuff();
     $scope.circles = circles;
+    $scope.sharingDirections = Stuff.sharingDirectionValues;
+    profileDAO.load(function(profile) {
+      $scope.profile = profile;
+      return $scope.$digest();
+    });
     stuffDAO.getItem($routeParams.id, function(stuff) {
+      log(stuff);
       $scope.stuff = new Stuff(stuff);
+      log($scope.stuff);
       return $scope.$digest();
     });
     redirectToList = function() {
@@ -92,7 +104,7 @@
     };
   };
 
-  MyStuffEditController.$inject = ['$scope', 'stuffDAO', '$routeParams', '$location'];
+  MyStuffEditController.$inject = ['$scope', 'stuffDAO', 'profileDAO', '$routeParams', '$location'];
 
   this.MyStuffController = MyStuffController;
 

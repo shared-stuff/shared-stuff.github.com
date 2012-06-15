@@ -6,7 +6,6 @@
   rs = remoteStorageUtils;
 
   LoginController = function($scope, $location) {
-    log("Login");
     return $scope.login = function() {
       var userAddress;
       try {
