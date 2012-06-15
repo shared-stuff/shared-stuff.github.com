@@ -1,4 +1,4 @@
 shared-stuff.github.com
 =======================
 
-Shared Stuff Page
+Shared Stuff Page (with minimized Javascript)
