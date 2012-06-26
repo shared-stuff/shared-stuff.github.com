@@ -75,6 +75,9 @@ applyIfNeeded = ($scope,f)->
   else
     $scope.$apply(f)
 
+digestIfNeeded = ($scope)->
+  if (!$scope.$$phase)
+    $scope.$digest()
 
 collectTokenStringFromItem = (item) ->
   searchString = ''
@@ -96,6 +99,9 @@ search = (list,query) ->
   else
     return list
 
+getCurrentTime = -> (new Date()).getTime()
+isOlderThan = (time,timeThreshold) -> getCurrentTime()-time > timeThreshold
+
 this.utils =
   log: log
   focus: focus
@@ -107,3 +113,6 @@ this.utils =
   focusAndSelect: focusAndSelect
   applyIfNeeded: applyIfNeeded
   search: search
+  getCurrentTime: getCurrentTime
+  isOlderThan: isOlderThan
+  digestIfNeeded: digestIfNeeded

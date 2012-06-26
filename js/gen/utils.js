@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  var applyIfNeeded, charsForRange, cleanObjectFromAngular, collectTokenStringFromItem, defer, doNothing, focus, focusAndSelect, isBlank, log, matchesSearchTokens, randomArrayElement, randomString, randomStringCharacterRange, search, x,
+  var applyIfNeeded, charsForRange, cleanObjectFromAngular, collectTokenStringFromItem, defer, digestIfNeeded, doNothing, focus, focusAndSelect, getCurrentTime, isBlank, isOlderThan, log, matchesSearchTokens, randomArrayElement, randomString, randomStringCharacterRange, search, x,
     __hasProp = Object.prototype.hasOwnProperty;
 
   log = function(t) {
@@ -96,6 +96,10 @@
     }
   };
 
+  digestIfNeeded = function($scope) {
+    if (!$scope.$$phase) return $scope.$digest();
+  };
+
   collectTokenStringFromItem = function(item) {
     var key, searchString, value;
     searchString = '';
@@ -130,6 +134,14 @@
     }
   };
 
+  getCurrentTime = function() {
+    return (new Date()).getTime();
+  };
+
+  isOlderThan = function(time, timeThreshold) {
+    return getCurrentTime() - time > timeThreshold;
+  };
+
   this.utils = {
     log: log,
     focus: focus,
@@ -140,7 +152,10 @@
     isBlank: isBlank,
     focusAndSelect: focusAndSelect,
     applyIfNeeded: applyIfNeeded,
-    search: search
+    search: search,
+    getCurrentTime: getCurrentTime,
+    isOlderThan: isOlderThan,
+    digestIfNeeded: digestIfNeeded
   };
 
 }).call(this);
